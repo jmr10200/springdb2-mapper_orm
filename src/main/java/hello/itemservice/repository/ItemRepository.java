@@ -5,6 +5,10 @@ import hello.itemservice.domain.Item;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * interface
+ * 인터페이스 이므로, 향후 다양한 데이터 접근 기술 구현체로 변경 가능
+ */
 public interface ItemRepository {
 
     Item save(Item item);
@@ -13,6 +17,6 @@ public interface ItemRepository {
 
     Optional<Item> findById(Long id);
 
-    List<Item> findAll(ItemSearchCond cond);
+    List<Item> findAll(ItemSearchCondition cond);
 
 }

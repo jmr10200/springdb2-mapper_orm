@@ -19,13 +19,16 @@ repositories {
 }
 
 dependencies {
+	// Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// 스프링 웹, MVC
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	// 스프링이 제공하는 test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	//테스트에서 lombok 사용
+	// 테스트에서 lombok 사용
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 }

@@ -1,7 +1,7 @@
 package hello.itemservice.web;
 
 import hello.itemservice.domain.Item;
-import hello.itemservice.repository.ItemSearchCond;
+import hello.itemservice.repository.ItemSearchCondition;
 import hello.itemservice.repository.ItemUpdateDto;
 import hello.itemservice.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * 상품을 CRUD 하는 컨트롤러
+ */
 @Controller
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public String items(@ModelAttribute("itemSearch") ItemSearchCond itemSearch, Model model) {
+    public String items(@ModelAttribute("itemSearch") ItemSearchCondition itemSearch, Model model) {
         List<Item> items = itemService.findItems(itemSearch);
         model.addAttribute("items", items);
         return "items";

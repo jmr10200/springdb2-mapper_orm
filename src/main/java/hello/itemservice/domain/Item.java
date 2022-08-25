@@ -2,6 +2,9 @@ package hello.itemservice.domain;
 
 import lombok.Data;
 
+/**
+ * Item 객체
+ */
 @Data
 public class Item {
 
