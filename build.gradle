@@ -23,6 +23,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// 스프링 웹, MVC
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// JdbcTemplate 추가
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	// H2 데이터베이스 추가
+	runtimeOnly 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	// 스프링이 제공하는 test
