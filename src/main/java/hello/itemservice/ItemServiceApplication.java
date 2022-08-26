@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
-
-// MemoryConfig 를 설정 파일로 사용
-@Import(MemoryConfig.class)
+//@Import(MemoryConfig.class) // MemoryConfig 를 설정 파일로 사용
+@Import(JdbcTemplateV1Config.class) // JdbcTemplateV1Config 를 설정 파일로 사용
 // 컨트롤러만 컴포넌트 스캔 사용, 나머지는 수동 빈 등록
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web")
 public class ItemServiceApplication {
