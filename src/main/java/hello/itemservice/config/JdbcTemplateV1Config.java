@@ -22,7 +22,7 @@ public class JdbcTemplateV1Config {
     }
 
     @Bean
-    private ItemRepository itemRepository() {
+    public ItemRepository itemRepository() {
         // ItemRepository 구현체로 JdbcTemplateItemRepositoryV1 등록
         // 메모리 저장소가 아니라 DB 연결하는 JdbcTemplate 가 사용됨
         return new JdbcTemplateItemRepositoryV1(dataSource);
