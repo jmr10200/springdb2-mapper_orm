@@ -82,7 +82,7 @@ public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
      */
     @Override
     public void update(Long itemId, ItemUpdateDto updateParam) {
-        String sql = "update item set item_name=?, price=?, quantity=? where id=?";
+        String sql = "update item set item_name = :itemName, price = :price, quantity = :quantity where id = :id";
 
         // MapSqlParameterSource
         // Map 과 유사한데, SQL 타입을 지정할 수 있는 등 SQL 에 좀더 특화된 기능을 제공한다.
@@ -104,7 +104,7 @@ public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
      */
     @Override
     public Optional<Item> findById(Long id) {
-        String sql = "select id, item_name, price, quantity from item where id = ?";
+        String sql = "select id, item_name, price, quantity from item where id = :id";
         try {
             Map<String, Object> param = Map.of("id", id);
             Item item = template.queryForObject(sql, param, itemRowMapper());
