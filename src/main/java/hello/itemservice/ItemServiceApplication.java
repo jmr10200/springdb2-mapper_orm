@@ -34,6 +34,7 @@ public class ItemServiceApplication {
 	/**
 	 * 임베디드 모드 DB
 	 */
+/*
 	@Bean
 	@Profile("test")
 	public DataSource dataSource() {
@@ -47,6 +48,8 @@ public class ItemServiceApplication {
 		dataSource.setPassword("");
 		return dataSource;
 	}
+*/
+
 }
 /* @Profile */
 // 스프링은 로딩 시점에 application.properties 의 spring.profile.active 속성을 읽어 프로필로 사용한다.
