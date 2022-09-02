@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
+
+    <!-- id = "인터페이스에 설정한 메소드명" -->
+    <!-- #{...} : 파라미터-->
+    <!-- useGeneratedKeys="true" : DB 가 키 생성하는 IDENTITY 전략일 때 사용
+         Insert 가 끝나면 Item 객체의 id 에 생성된 값이 입력된다. -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into item (item_name, price, quantity)
+        values (#{itemName}, #{price}, #{quantity})
+    </insert>
+
+    <!-- 파라미터가 여러개의 경우 @Param 을 지정해야 한다. -->
+    <update id="update">
+        update item
+        set item_name = #{updateParam.itemName},
+        price = #{updateParam.price},
+        quantity = #{updateParam.quantity}
+        where id = #{id}
+    </update>
+
+    <!-- resultType = "리턴타입"
+         application.properties 에 mybatis.type-aliases-package=hello.itemservice.domain 지정으로
+         패키지 지정하지 않고 Item 만 설정해도 된다. 설정이 없으면 패키지명 다 적어야 한다. -->
+    <select id="findById" resultType="Item">
+        select id, item_name, price, quantity
+        from item
+        where id = #{id}
+    </select>
+
+    <!-- XML 의 한계 : TAG 때문에 부등호 사용에 문제가 있다.
+         방법1 : &lt; : <  |  &gt; : >  |  &amp; : &
+         방법2 : CDATA 구문의 사용
+                <![CDATA[
+                and price <= #{maxPrice}
+                ]]>  -->
+    <select id="findAll" resultType="Item">
+        select id, item_name, price, quantity
+        from item
+        <where>
+            <if test="itemName != null and itemName != ''">
+                and item_name like concat('%',#{itemName},'%')
+            </if>
+            <if test="maxPrice != null">
+                and price &lt;= #{maxPrice}
+            </if>
+        </where>
+    </select>
+
+</mapper>
