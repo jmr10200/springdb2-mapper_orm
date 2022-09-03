@@ -116,3 +116,39 @@ public class JpaItemRepositoryV1 implements ItemRepository {
 
     }
 }
+/* 예외 변환 */
+// EntityManager 는 순수한 JPA 기술이고, 스프링과는 관계까 없다.
+// 따라서 예외가 발생하면 JPA 관련 예외를 발생시킨다.
+// JPA 는 PersistenceException 과 그 하위 예외를 발생시킨다.
+// 추가로 IllegalStateException, IllegalArgumentException 을 발생시킬 수 있다.
+
+// JPA 예외를 스프링 예외 추상화 (DataAccessException) 로 변환하는 방법 : @Repository
+
+// @Repository 의 기능
+// @Repository 가 붙은 클래스는 컴포넌트 스캔의 대상이다.
+// @Repository 가 붙은 클래스는 예외 변환 AOP 적용 대상이다.
+//  스프링과 JPA 를 함께 사용하는 경우 스프링은 JPA 예외 변환기(PersistenceExceptionTranslator) 를 등록한다.
+//  예외 변환 AOP 프록시는 JPA 관련 예외가 발생하면 JPA 예외 변환기를 통해 발생한 예외를 스프링 데이터 접근 예외로 변환한다.
+
+// 예외 변환 전
+// 1. JPA 예외 발생 (PersistenceException)
+// 2. JPA 전달 (PersistenceException) : EntityManager -> JpaItemRepositoryV1
+// 3. JPA 전달 (PersistenceException) : JpaItemRepositoryV1 -> 서비스 계층
+// 4. 서비스 계층이 JPA 기술에 종속 (PersistenceException)
+
+// 예외 변환 후
+// 1. JPA 예외 발생 (PersistenceException)
+// 2. JPA 전달 (PersistenceException) : EntityManager -> JpaItemRepositoryV1
+// 3. JPA 전달 (PersistenceException) : JpaItemRepositoryV1 -> 예외변환 AOP Proxy
+// 4. 서비스 계층이 스프링 예외 추상화로 변환 (PersistenceException => DataAccessException)
+// 5. 스프링 예외 전달 (DataAccessException) : 예외변환 AOP Proxy -> 서비스 계층
+// 6. 스프링 예외 추상화에 의존 (DataAccessException)
+// 즉, 리포지토리에 @Repository 선언함으로써 스프링이 예외 변환을 처리하는 AOP 를 만들어준다.
+
+// 참고
+// 스프링부트는 PersistenceExceptionTranslationPostProcessor 를 자동 등록하는데,
+// 여기서 @Repository 를 AOP 프록시로 만드는 어드바이저가 등록된다.
+
+// 참고
+// 복잡한 과정을 거쳐서 실제 예외를 변환하는데, 실제 JPA 예외를 변환하는 코드는
+// EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible() 이다.
