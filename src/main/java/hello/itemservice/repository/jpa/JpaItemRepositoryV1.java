@@ -34,7 +34,11 @@ public class JpaItemRepositoryV1 implements ItemRepository {
 
     @Override
     public Item save(Item item) {
+        // em.persist() : JPA 에서 객체를 테이블에 저장하는 메소드
         entityManager.persist(item);
+        // 실행 결과 로그 : insert into item (id, item_name, price, quantity) values (default, ?, ?, ?)
+        // PK 생성 전략을 IDENTITY 로 사용했기 때문에 id 값이 빠져있다.
+        // 쿼리 실행 후, Item 객체의 id 필드에 DB 가 생성한 PK 값이 들어가게 된다.
         return item;
     }
 
@@ -44,12 +48,21 @@ public class JpaItemRepositoryV1 implements ItemRepository {
         findItem.setItemName(updateParam.getItemName());
         findItem.setPrice(updateParam.getPrice());
         findItem.setQuantity(updateParam.getQuantity());
+        // em.update() 같은 메소드를 호출하지 않았는데 UPDATE SQL 이 실행된다.
+        // JPA 는 트랜젝션이 커밋되는 시점에 변경된 엔티티 객체가 있는지 확인하고, 변경된 경우 SQL 을 실행한다.
+        // JPA 가 변경된 엔티티 객체를 찾는 과정은 영속성 컨텍스트라는 JPA 내부 원리에 의한다.
+        // 테스트의 경우 마지막에 트랜젝션이 rollback 되므로 @Commit 으로 확인해야 한다.
     }
 
     @Override
     public Optional<Item> findById(Long id) {
         Item item = entityManager.find(Item.class, id);
         return Optional.ofNullable(item);
+        // em.find() : JPA 에서 엔티티 객체를 PK 기준으로 조회할 때 조회타입, PK 지정으로 사용
+        // JPA 가 SELECT SQL 을 생성해 실행해주고 결과를 조회타입 객체로 바로 변환해준다.
+        // 참고)
+        // item0_.id as id1_0_0 과 같이 JPA(Hibernate) 가 만들어 실행하는 SQL 은 별칭이 복잡하다.
+        // 이는, JOIN 등 복잡한 조건에서도 문제없도록 기계적으로 만들다보니 이러한 결과가 나온 듯 하다.
     }
 
     @Override
@@ -89,5 +102,17 @@ public class JpaItemRepositoryV1 implements ItemRepository {
             query.setParameter("maxPrice", maxPrice);
         }
         return query.getResultList();
+        // JPQL (Java Persistence Query Language) 객체지향 쿼리 언어
+        // 주로 여러 데이터를 복잡한 조건으로 조회할 때 사용
+        // SQL 이 테이블 대상이라면, JPQL 은 엔티티 객체를 대상으로 SQL 을 실행한다 생각하자.
+        // 엔티티 객체를 대상으로 하기 때문에 from 다음에 Item 엔티티 객체 이름이 들어간다.
+        // 엔티티 객체와 속성의 대소문자는 구분해야 한다.
+        // SQL 과 문법이 거의 비슷하다.
+
+        // 로그로 확인한 실행된 JPQL
+        // select i from Item i where i.itemName like concat('%', :itemName, '%') and i.price <= :maxPrice
+        // JPQL 통해 생성된 SQL
+        // select item0_.id as id1_0_, item0_.item_name as item_nam2_0_, item0_.price as price3_0_, item0_.quantity as quantity4_0_ from item item0_ where (item0_.item_name like ('%'||?||'%')) and item0_.price<=?
+
     }
 }
