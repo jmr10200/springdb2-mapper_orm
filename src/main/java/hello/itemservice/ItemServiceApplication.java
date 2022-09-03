@@ -17,7 +17,8 @@ import javax.sql.DataSource;
 //@Import(JdbcTemplateV1Config.class) // JdbcTemplateV1Config 를 설정 파일로 사용
 //@Import(JdbcTemplateV2Config.class) // JdbcTemplateV2Config 를 설정 파일로 사용
 //@Import(JdbcTemplateV3Config.class) // JdbcTemplateV3Config 를 설정 파일로 사용
-@Import(MyBatisConfig.class) // MyBatis
+//@Import(MyBatisConfig.class) // MyBatis
+@Import(JpaConfig.class) // JPA
 // 컨트롤러만 컴포넌트 스캔 사용, 나머지는 수동 빈 등록
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web")
 public class ItemServiceApplication {
