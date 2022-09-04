@@ -8,6 +8,8 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext["hibernate.version"] = "5.6.5.Final" // Hibernate 5.6.6 ~ 5.6.7 에 Like 문장사용시 버그 발생
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
