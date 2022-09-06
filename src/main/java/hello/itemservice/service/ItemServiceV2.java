@@ -17,8 +17,13 @@ import java.util.Optional;
 @Transactional
 public class ItemServiceV2 implements ItemService {
 
+    // ItemRepositoryV2 는 스프링 데이터 JPA 의 기능을 제공하는 리포지토리
     private final ItemRepositoryV2 itemRepositoryV2;
+
+    // ItemQueryRepositoryV2 는 Querydsl 사용해서 복잡한 쿼리 기능을 제공하는 리포지토리
     private final ItemQueryRepositoryV2 itemQueryRepositoryV2;
+
+    // 이렇게 둘을 분리하여 기본 CRUD 와 단순 조회는 스프링 데이터 JPA , 복잡한 조회쿼리는 Querydsl
 
     @Override
     public Item save(Item item) {
