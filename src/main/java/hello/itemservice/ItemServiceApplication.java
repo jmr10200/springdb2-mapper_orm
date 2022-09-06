@@ -20,7 +20,8 @@ import javax.sql.DataSource;
 //@Import(MyBatisConfig.class) // MyBatis
 //@Import(JpaConfig.class) // JPA
 //@Import(SpringDataJpaConfig.class) // Spring Data JPA
-@Import(QuerydslConfig.class)
+//@Import(QuerydslConfig.class)
+@Import(V2Config.class)
 // 컨트롤러만 컴포넌트 스캔 사용, 나머지는 수동 빈 등록
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web")
 public class ItemServiceApplication {
